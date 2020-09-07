@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableList;
 
 public class King extends Piece {
 
-    private static final int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
+    private static final int[] Candidate_Move_Coordinate = {-9, -8, -7, -1, 1, 7, 8, 9};
 
     King(int piecePosition, Alliance pieceAlliance) {
         super(piecePosition, pieceAlliance);
@@ -24,14 +24,13 @@ public class King extends Piece {
         
         final List<Move> legalMoves = new ArrayList<>();
         
-        for(final int candidateCoordinateOffset: CANDIDATE_MOVE_VECTOR_COORDINATES){
-            int candidateDestinationCoordinate = this.piecePosition;
+        for(final int currentCandidateOffset: Candidate_Move_Coordinate){
+            final int candidateDestinationCoordinate = this.piecePosition + currentCandidateOffset;
             while(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){
-                if(isFirstColumnException(candidateDestinationCoordinate, candidateCoordinateOffset) ||
-                    isEighthColumnException(candidateDestinationCoordinate, candidateCoordinateOffset)){
-                    break;
+                if(isFirstColumnException(this.piecePosition, currentCandidateOffset) ||
+                    isEighthColumnException(this.piecePosition, currentCandidateOffset)){
+                    continue;
                 }
-                candidateDestinationCoordinate += candidateCoordinateOffset;
                 if(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){
                     final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                     if(!candidateDestinationTile.isTileOccupied()){

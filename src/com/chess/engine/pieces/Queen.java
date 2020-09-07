@@ -12,7 +12,7 @@ import com.chess.engine.board.Tile;
 import com.google.common.collect.ImmutableList;
 
 public abstract class Queen extends Piece {
-    public static final int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
+    public static final int[] CANDIDATE_MOVE_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
     Queen(int piecePosition, Alliance pieceAlliance) {
         super(piecePosition, pieceAlliance);
@@ -23,14 +23,14 @@ public abstract class Queen extends Piece {
         
         final List<Move> legalMoves = new ArrayList<>();
     
-        for(final int candidateCoordinateOffset: CANDIDATE_MOVE_VECTOR_COORDINATES){
-            int candidateDestinationCoordinate = this.piecePosition;
+        for(final int currentCandidateOffset: CANDIDATE_MOVE_COORDINATES){
+            int candidateDestinationCoordinate = this.piecePosition + currentCandidateOffset;
             while(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){
-                if(isFirstColumnException(candidateDestinationCoordinate, candidateCoordinateOffset) ||
-                    isEighthColumnException(candidateDestinationCoordinate, candidateCoordinateOffset)){
-                    break;
+                if(isFirstColumnException(this.piecePosition, currentCandidateOffset) ||
+                    isEighthColumnException(this.piecePosition, currentCandidateOffset)){
+                    continue;
                 }
-                candidateDestinationCoordinate += candidateCoordinateOffset;
+                candidateDestinationCoordinate += currentCandidateOffset;
                 if(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){
                     final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                     if(!candidateDestinationTile.isTileOccupied()){
